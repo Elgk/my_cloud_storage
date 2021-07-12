@@ -1,5 +1,6 @@
 package server.nio;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -8,7 +9,11 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 public class Server {
@@ -69,12 +74,53 @@ public class Server {
             }
         }
         System.out.println("received: " + sb);
-        for (SelectionKey selectionKey : selector.keys()) {
+
+        String command = sb.toString().replace("\n","").replace("\r","");
+        if ("ls".equals(command)){
+            getFiles();
+        }
+        if (command.startsWith("cat")){
+            getFileContent(command);
+        }
+        if ("exit".equals(command)){
+            System.out.println("Client is log out");
+            channel.close();
+            return;
+
+        }
+        // массовая рассылка
+/*        for (SelectionKey selectionKey : selector.keys()) {
             if (selectionKey.isValid() && selectionKey.channel() instanceof SocketChannel) {
                 SocketChannel ch = (SocketChannel) selectionKey.channel();
                 ch.write(ByteBuffer.wrap((name + ": " + sb).getBytes(StandardCharsets.UTF_8)));
             }
+        }*/
+    }
+
+    private void getFileContent(String command) throws IOException {
+        String fileName = command.split(" ")[1];
+        if (!Files.exists(Path.of("server/serverFiles", fileName))){
+            sendMessage("No such file exists\n");
+        }else {
+            List<String> list = Files.readAllLines(Path.of("server/serverFiles", fileName));
+            for (String s : list) {
+                sendMessage(s.concat("\n"));
+            }
         }
+    }
+
+    private void sendMessage(String message) throws IOException {
+        for (SelectionKey selectionKey : selector.keys()) {
+            if (selectionKey.isValid() && selectionKey.channel() instanceof SocketChannel) {
+                SocketChannel ch = (SocketChannel) selectionKey.channel();
+                ch.write(ByteBuffer.wrap(message.getBytes(StandardCharsets.UTF_8)));
+            }
+        }
+    }
+    private void getFiles() throws IOException {
+        File file = new File("server/serverFiles");
+        String msg = Arrays.toString(file.list()).concat("\n");
+        sendMessage(msg);
     }
 
     private void handleAccept(SelectionKey key) throws IOException {
