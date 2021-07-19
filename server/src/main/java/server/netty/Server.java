@@ -27,7 +27,6 @@ public class Server {
                             @Override
                             protected void initChannel(SocketChannel channel) throws Exception {
                                 channel.pipeline().addLast(
-                                     //   new ByteInboundHandler());
                                         new ObjectEncoder(),
                                         new ObjectDecoder(ClassResolvers.cacheDisabled(null)),
                                         new MessageHandler()
