@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import model.Message;
 
 import java.io.*;
 import java.net.Socket;
@@ -21,11 +22,13 @@ public class ChatController implements Initializable {
     private String root = "client/clientFiles";
     private DataInputStream in;
     private DataOutputStream out;
+    private NettyNetwork network;
     private byte[] buffer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        buffer = new byte[256];
+        network = new NettyNetwork(s -> Platform.runLater(() -> textField.setText(s.toString())));
+   /*     buffer = new byte[256];
         try {
             File dir = new File(root);
             listView.getItems().clear();
@@ -52,12 +55,13 @@ public class ChatController implements Initializable {
             readThread.start();
         }catch (Exception e){
             e.printStackTrace();
-        }
+        }*/
     }
 
     public void send(ActionEvent actionEvent) throws IOException {
-       // String msg = textField.getText();
-        String filename = listView.getSelectionModel().getSelectedItem();
+        String msg = textField.getText();
+        network.writeMessage(new Message(msg));
+    /*    String filename = listView.getSelectionModel().getSelectedItem();
         Path file = Path.of(root, filename);
         long size = Files.size(file);
         out.writeUTF(filename);
@@ -65,6 +69,6 @@ public class ChatController implements Initializable {
         Files.copy(file,out);
      //   os.write(msg.getBytes(StandardCharsets.UTF_8));
         out.flush();
-
+*/
     }
 }
