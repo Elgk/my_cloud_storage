@@ -1,4 +1,4 @@
-package sreamAPI;
+package streamAPI;
 
 @FunctionalInterface
 public interface Func {
