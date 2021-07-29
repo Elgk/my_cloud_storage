@@ -1,10 +1,15 @@
 package streamAPI;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Test {
@@ -100,6 +105,23 @@ public class Test {
                 .reduce(1, ((left, right) -> left * right));   // identity - это аккумулятор, накапливает результат операции
         System.out.println("mult : " + mult);
 
-       
+       String userHome = System.getProperty("user.home");
+       Path homePath = Path.of(userHome);
+        System.out.println(homePath.toString());
+        try {
+            List<String> file = Files.list(homePath)
+                    .map(path -> path.getFileName().toString())
+                    .collect(Collectors.toList());
+            file.forEach(System.out::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        try {
+//            ListFiles listFiles = new ListFiles(homePath);
+//            listFiles.getFiles().forEach(System.out::println);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }

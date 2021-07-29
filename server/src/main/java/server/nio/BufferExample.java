@@ -29,14 +29,7 @@ public class BufferExample {
         buffer.flip();
 
         System.out.println(buffer.getInt());
-//        buffer.rewind();
-//        while (buffer.hasRemaining()) {
-//            System.out.println((char) buffer.get());
-//        }
 //
-//        buffer.clear();
-//        while (buffer.hasRemaining()) {
-//            System.out.println((char) buffer.get());
 //        }
     }
 }

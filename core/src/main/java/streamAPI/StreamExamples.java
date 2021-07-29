@@ -23,8 +23,7 @@ public class StreamExamples {
                 // или то же самое
                 .map(Integer::parseInt)
                 .filter(p-> p % 2 == 0)
-                .forEach(System.out::println);  //распечатывает каждый элемент
-
+                .forEach(System.out::println);
 
         Integer res = Files.lines(Paths.get(digits))
                 .flatMap(str -> Arrays.stream(str.split(" +")))
@@ -114,14 +113,7 @@ public class StreamExamples {
                 ));
 
         System.out.println(digitListMap);
-// частотный анализ слов
- /*      Files.lines(Paths.get(text))
-                .flatMap(str -> Arrays.stream(str.split(" +")))
-                .filter(word -> word != null && !word.isEmpty())
-                .map(String::toLowerCase)
-                .map(word -> word.replaceAll("'s", ""))
-                .map(word -> word.replaceAll("\\W+", ""))
-                .forEach(System.out::println);*/
+
 
         Map<String, Integer> wordsMap = Files.lines(Paths.get(text))
                 .flatMap(str -> Arrays.stream(str.split(" +")))
