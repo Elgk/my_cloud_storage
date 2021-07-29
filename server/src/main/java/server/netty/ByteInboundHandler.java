@@ -36,15 +36,6 @@ public class ByteInboundHandler extends ChannelInboundHandlerAdapter {
 
         ByteBuf res = ctx.alloc().buffer();
         res.writeBytes(result.getBytes(StandardCharsets.UTF_8));
-        ctx.writeAndFlush(res);
-
-//        log.debug("msg {} ", sb);
-//        // buf.retain();
-//        ByteBuf buffer = ctx.alloc().buffer();
-//        buffer.writeBytes(sb.toString().getBytes(StandardCharsets.UTF_8));
-//        //  ctx.writeAndFlush(buf);
-//        ctx.writeAndFlush(buffer);
-
     }
 
     @Override

@@ -1,4 +1,4 @@
-package sreamAPI;
+package streamAPI;
 
 import java.net.URI;
 import java.nio.file.Files;
@@ -9,10 +9,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CollectorsExamples {
-
+// суть технологии stream - преобразование одних коллекций в другие
     public static void main(String[] args) throws Exception {
 
-        URI digits = StreamExamples.class.getResource("digits.txt").toURI();
+        URI digits = StreamExamples.class.getResource("digits2.txt").toURI();
         URI text = StreamExamples.class.getResource("text.txt").toURI();
 
         List<Integer> list = Files.lines(Paths.get(digits))
